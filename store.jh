@@ -1,0 +1,98 @@
+
+entity Store{
+	regNo String,
+	name String,
+    totalRating Double,
+    location String,
+	locationName String,
+    contactNo Long,
+    openingTime Instant,
+    email String,
+    closingTime Instant,
+    info String,
+	minAmount Double,
+    maxDeliveryTime Instant,
+    storeUniqueId String required,
+    imageLink String required
+}
+
+entity StoreSettings{
+	deliveryCharge Double,
+	serviceCharge Double,
+	orderAcceptType String ,
+	isInventoryRequired Boolean,
+    isActive Boolean
+}
+
+entity PreOrderSettings{
+
+	isPreOrderAvailable Boolean,
+	fromTime ZonedDateTime,
+	toTime ZonedDateTime
+}
+
+entity Banner{
+     imageLink String
+}
+
+entity Reply{
+	userName String,
+	reply String,
+    repliedDate ZonedDateTime
+}
+
+entity DeliveryInfo{
+	startingTime Instant,
+	endTime Instant
+}
+
+entity Type{
+	name String
+}
+
+entity StoreType{
+	name String
+}
+entity StoreAddress{
+
+	pincode String,
+	houseNoOrBuildingName String,
+	roadNameAreaOrStreet String,
+	city String,
+	state String,
+	landmark String,
+	addressType String
+}
+entity UserRatingReview{
+	userName String,
+	rating Double,
+	review String,
+    date ZonedDateTime
+}
+
+entity UniqueStoreID{
+}
+
+relationship OneToOne{
+
+	Store{storeAddress} to StoreAddress,
+	Store{storeSettings} to StoreSettings,
+	Store{preOrderSettings} to PreOrderSettings
+}
+
+
+relationship OneToMany{
+
+    Store{storeType} to StoreType,
+	Store{banner} to Banner,
+	Store{deliveryInfo} to DeliveryInfo,
+	Store{userRatingReview} to UserRatingReview,
+
+}
+
+relationship ManyToOne{
+	 DeliveryInfo{type} to Type
+}
+service all with serviceImpl
+dto all with mapstruct
+paginate all with pagination
