@@ -1,9 +1,10 @@
 package com.diviso.graeshoppe.store.domain.search;
+import org.springframework.data.annotation.Id;
 import  org.springframework.data.elasticsearch.annotations.CompletionField;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -23,12 +24,12 @@ public class Test implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    
+    @Id
     @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
   
-    @Column(name = "name")
+    
     private String name;
 
     @CompletionField(maxInputLength = 100)

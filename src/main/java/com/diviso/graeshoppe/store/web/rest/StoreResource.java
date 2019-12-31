@@ -1,5 +1,6 @@
 package com.diviso.graeshoppe.store.web.rest;
-
+import org.springframework.data.elasticsearch.core.completion.Completion;
+import com.diviso.graeshoppe.store.domain.search.Test;
 import com.diviso.graeshoppe.store.service.StoreService;
 import com.diviso.graeshoppe.store.web.rest.errors.BadRequestAlertException;
 import com.diviso.graeshoppe.store.service.dto.StoreDTO;
@@ -27,14 +28,14 @@ import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
-
+import com.diviso.graeshoppe.store.repository.search.TestSearchRepository;
 /**
  * REST controller for managing {@link com.diviso.graeshoppe.store.domain.Store}.
  */
 @RestController
 @RequestMapping("/api")
 public class StoreResource {
-
+	TestSearchRepository testSearchRepository;
     private final Logger log = LoggerFactory.getLogger(StoreResource.class);
 
     private static final String ENTITY_NAME = "storeStore";
@@ -48,6 +49,29 @@ public class StoreResource {
         this.storeService = storeService;
     }
 
+    @PostMapping("/test")
+    public Test createTest() {
+    	Test test = new Test();
+    	String[] in= {"rafeek"};
+    	Completion c1= new Completion(in);
+    	test.setName("rafeek");
+    	test.setSuggest(c1);
+    	
+    	 testSearchRepository.save(test);
+    	
+    	
+    	Test test2 = new Test();
+    	String[] input2= {"rafeek","karthi"};
+    	Completion c2= new Completion(input2);
+    	test.setName("rafeek");
+    	test.setSuggest(c2);
+    	return testSearchRepository.save(test2);
+    }
+    
+    
+    
+    
+    
     /**
      * {@code POST  /stores} : Create a new store.
      *
