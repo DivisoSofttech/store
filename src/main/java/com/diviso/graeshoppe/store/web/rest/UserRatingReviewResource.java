@@ -34,50 +34,65 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @RequestMapping("/api")
 public class UserRatingReviewResource {
 
-    private final Logger log = LoggerFactory.getLogger(UserRatingReviewResource.class);
+	private final Logger log = LoggerFactory.getLogger(UserRatingReviewResource.class);
 
     private static final String ENTITY_NAME = "storeUserRatingReview";
 
+    private final UserRatingReviewService userRatingReviewService;
+    
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
-    private final UserRatingReviewService userRatingReviewService;
 
     public UserRatingReviewResource(UserRatingReviewService userRatingReviewService) {
         this.userRatingReviewService = userRatingReviewService;
     }
 
     /**
-     * {@code POST  /user-rating-reviews} : Create a new userRatingReview.
+     * POST  /user-rating-reviews : Create a new userRatingReview.
      *
-     * @param userRatingReviewDTO the userRatingReviewDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new userRatingReviewDTO, or with status {@code 400 (Bad Request)} if the userRatingReview has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * @param userRatingReviewDTO the userRatingReviewDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new userRatingReviewDTO, or with status 400 (Bad Request) if the userRatingReview has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
+    
+   /* @GetMapping("/user")
+    public Boolean get(@RequestBody UserRatingReviewDTO userRatingReviewDTO) {
+    	return userRatingReviewService.existsByStoreIdAndUserName(userRatingReviewDTO.getStoreId(), userRatingReviewDTO.getUserName());
+    }*/
+    
+    
     @PostMapping("/user-rating-reviews")
     public ResponseEntity<UserRatingReviewDTO> createUserRatingReview(@RequestBody UserRatingReviewDTO userRatingReviewDTO) throws URISyntaxException {
         log.debug("REST request to save UserRatingReview : {}", userRatingReviewDTO);
         if (userRatingReviewDTO.getId() != null) {
             throw new BadRequestAlertException("A new userRatingReview cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if(userRatingReviewService.isAlreadyRatedUser(userRatingReviewDTO.getStoreId(), userRatingReviewDTO.getUserName())==false) {
         UserRatingReviewDTO result = userRatingReviewService.save(userRatingReviewDTO);
         return ResponseEntity.created(new URI("/api/user-rating-reviews/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                .body(result);
+        }
+        else {
+        return	updateUserRatingReview(userRatingReviewDTO);
+        }
+       
     }
 
     /**
-     * {@code PUT  /user-rating-reviews} : Updates an existing userRatingReview.
+     * PUT  /user-rating-reviews : Updates an existing userRatingReview.
      *
-     * @param userRatingReviewDTO the userRatingReviewDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userRatingReviewDTO,
-     * or with status {@code 400 (Bad Request)} if the userRatingReviewDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the userRatingReviewDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * @param userRatingReviewDTO the userRatingReviewDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated userRatingReviewDTO,
+     * or with status 400 (Bad Request) if the userRatingReviewDTO is not valid,
+     * or with status 500 (Internal Server Error) if the userRatingReviewDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/user-rating-reviews")
     public ResponseEntity<UserRatingReviewDTO> updateUserRatingReview(@RequestBody UserRatingReviewDTO userRatingReviewDTO) throws URISyntaxException {
         log.debug("REST request to update UserRatingReview : {}", userRatingReviewDTO);
+        userRatingReviewDTO.setId(userRatingReviewService.findUserRatingReviwIdByStoreIdAndUserName(userRatingReviewDTO.getStoreId(), userRatingReviewDTO.getUserName()));
+        
         if (userRatingReviewDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -88,12 +103,10 @@ public class UserRatingReviewResource {
     }
 
     /**
-     * {@code GET  /user-rating-reviews} : get all the userRatingReviews.
+     * GET  /user-rating-reviews : get all the userRatingReviews.
      *
-
-     * @param pageable the pagination information.
-
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userRatingReviews in body.
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of userRatingReviews in body
      */
     @GetMapping("/user-rating-reviews")
     public ResponseEntity<List<UserRatingReviewDTO>> getAllUserRatingReviews(Pageable pageable) {
@@ -104,10 +117,10 @@ public class UserRatingReviewResource {
     }
 
     /**
-     * {@code GET  /user-rating-reviews/:id} : get the "id" userRatingReview.
+     * GET  /user-rating-reviews/:id : get the "id" userRatingReview.
      *
-     * @param id the id of the userRatingReviewDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userRatingReviewDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the userRatingReviewDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the userRatingReviewDTO, or with status 404 (Not Found)
      */
     @GetMapping("/user-rating-reviews/{id}")
     public ResponseEntity<UserRatingReviewDTO> getUserRatingReview(@PathVariable Long id) {
@@ -117,25 +130,25 @@ public class UserRatingReviewResource {
     }
 
     /**
-     * {@code DELETE  /user-rating-reviews/:id} : delete the "id" userRatingReview.
+     * DELETE  /user-rating-reviews/:id : delete the "id" userRatingReview.
      *
-     * @param id the id of the userRatingReviewDTO to delete.
-     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     * @param id the id of the userRatingReviewDTO to delete
+     * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/user-rating-reviews/{id}")
     public ResponseEntity<Void> deleteUserRatingReview(@PathVariable Long id) {
         log.debug("REST request to delete UserRatingReview : {}", id);
         userRatingReviewService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
     /**
-     * {@code SEARCH  /_search/user-rating-reviews?query=:query} : search for the userRatingReview corresponding
+     * SEARCH  /_search/user-rating-reviews?query=:query : search for the userRatingReview corresponding
      * to the query.
      *
-     * @param query the query of the userRatingReview search.
-     * @param pageable the pagination information.
-     * @return the result of the search.
+     * @param query the query of the userRatingReview search
+     * @param pageable the pagination information
+     * @return the result of the search
      */
     @GetMapping("/_search/user-rating-reviews")
     public ResponseEntity<List<UserRatingReviewDTO>> searchUserRatingReviews(@RequestParam String query, Pageable pageable) {
@@ -144,4 +157,5 @@ public class UserRatingReviewResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+
 }
