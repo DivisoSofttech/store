@@ -10,6 +10,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,7 @@ import com.diviso.graeshoppe.store.repository.search.TestSearchRepository;
 @RestController
 @RequestMapping("/api")
 public class StoreResource {
+	@Autowired
 	TestSearchRepository testSearchRepository;
     private final Logger log = LoggerFactory.getLogger(StoreResource.class);
 
@@ -52,19 +54,19 @@ public class StoreResource {
     @PostMapping("/test")
     public Test createTest() {
     	Test test = new Test();
-    	String[] in= {"rafeek"};
-    	Completion c1= new Completion(in);
+    	//String[] in= {"rafeek"};
+    	//Completion c1= new Completion(in);
     	test.setName("rafeek");
-    	test.setSuggest(c1);
+    	//test.setSuggest(c1);
     	
     	 testSearchRepository.save(test);
     	
     	
     	Test test2 = new Test();
-    	String[] input2= {"rafeek","karthi"};
-    	Completion c2= new Completion(input2);
+    	/*String[] input2= {"rafeek","karthi"};
+    	Completion c2= new Completion(input2);*/
     	test.setName("rafeek");
-    	test.setSuggest(c2);
+    	//test.setSuggest(c2);
     	return testSearchRepository.save(test2);
     }
     
