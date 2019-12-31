@@ -52,22 +52,23 @@ public class StoreResource {
     }
 
     @PostMapping("/test")
-    public Test createTest() {
-    	Test test = new Test();
+    public Test createTest(@RequestBody Test test ) {
+    	/*Test test = new Test();
     	//String[] in= {"rafeek"};
     	//Completion c1= new Completion(in);
     	test.setName("rafeek");
     	//test.setSuggest(c1);
+*/    	
+    return	 testSearchRepository.save(test);
+    	 
     	
-    	 testSearchRepository.save(test);
     	
-    	
-    	Test test2 = new Test();
-    	/*String[] input2= {"rafeek","karthi"};
-    	Completion c2= new Completion(input2);*/
+    	/*Test test2 = new Test();
+    	String[] input2= {"rafeek","karthi"};
+    	Completion c2= new Completion(input2);
     	test.setName("rafeek");
     	//test.setSuggest(c2);
-    	return testSearchRepository.save(test2);
+    	return testSearchRepository.save(test2);*/
     }
     
     

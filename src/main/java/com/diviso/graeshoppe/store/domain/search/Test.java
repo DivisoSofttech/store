@@ -25,7 +25,7 @@ public class Test implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
+   // @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
   
