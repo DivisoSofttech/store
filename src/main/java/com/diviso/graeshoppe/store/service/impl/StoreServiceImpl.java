@@ -70,7 +70,9 @@ public class StoreServiceImpl implements StoreService {
 		StoreDTO result = storeMapper.toDto(store);
 		StoreSuggestion  storeSuggestion = new StoreSuggestion();
 		storeSuggestion.setId(result.getId());
-		storeSuggestion.setSuggest(new Completion(new String[] {result.getRegNo()}));
+        Completion completion=  new Completion(new String[] {result.getName()});
+      completion.setWeight(1);
+		storeSuggestion.setSuggest(completion);
 		
 		storeSearchRepository.save(store);
 		storeSuggestionSearchRepository.save(storeSuggestion);
