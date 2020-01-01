@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.completion.Completion;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
-
+import com.diviso.graeshoppe.store.domain.search.StoreSuggestion;
 /**
  * Service Implementation for managing {@link Store}.
  */
@@ -63,6 +64,9 @@ public class StoreServiceImpl implements StoreService {
 		Store store = storeMapper.toEntity(storeDTO);
 		store = storeRepository.save(store);
 		StoreDTO result = storeMapper.toDto(store);
+		StoreSuggestion  storeSuggestion = new StoreSuggestion();
+		storeSuggestion.setId(result.getId());
+		storeSuggestion.setSuggest(new Completion(new String[] {result.getRegNo()}));
 		storeSearchRepository.save(store);
 		return result;
 	}

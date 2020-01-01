@@ -19,18 +19,16 @@ import org.springframework.data.elasticsearch.core.completion.Completion;
  * A Store.
  */
 
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "test")
-public class Test implements Serializable {
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "storesuggestion")
+public class StoreSuggestion implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+
 
     @Id
-   // @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
+    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
   
-    
-    private String name;
 
     @CompletionField(maxInputLength = 100)
     private Completion suggest;
@@ -38,16 +36,7 @@ public class Test implements Serializable {
 
    
 
-    public String getName() {
-        return name;
-    }
-
   
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
   
   
 
@@ -56,7 +45,7 @@ public class Test implements Serializable {
  
     @Override
 	public String toString() {
-		return "Test [id=" + id + ", name=" + name + ", suggest=" + suggest + "]";
+		return "StoreSuggestion [id=" + id + ", suggest=" + suggest + "]";
 	}
 
 
@@ -85,10 +74,7 @@ public class Test implements Serializable {
 
 
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
+	
 
 
 	@Override
@@ -96,15 +82,5 @@ public class Test implements Serializable {
         return 31;
     }
 
-  /*  @Override
-    public String toString() {
-        return "Store{" +
-            "id=" + getId() +
-            ", regNo='" + getRegNo() + "'" +
-            ", name='" + getName() + "'" +
-            ", info='" + getInfo() + "'" +
-            ", minAmount=" + getMinAmount() +
-            ", maxDeliveryTime='" + getMaxDeliveryTime() + "'" +
-            "}";
-    }*/
+ 
 }
