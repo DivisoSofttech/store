@@ -1,5 +1,6 @@
 package com.diviso.graeshoppe.store.web.rest;
 import org.springframework.data.elasticsearch.core.completion.Completion;
+//import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import com.diviso.graeshoppe.store.domain.search.Test;
 import com.diviso.graeshoppe.store.service.StoreService;
 import com.diviso.graeshoppe.store.web.rest.errors.BadRequestAlertException;
@@ -54,21 +55,21 @@ public class StoreResource {
     @PostMapping("/test")
     public Test createTest(/*@RequestBody Test test */) {
     	Test test = new Test();
-    	String[] in= {"rafeek"};
-    	Completion c1= new Completion(in);
+    	/*String[] in= {"rafeek"};
+    	Completion c1= new Completion(in);*/
     	test.setName("rafeek");
-    	test.setSuggest(c1);
-    	
-    /*return*/	 testSearchRepository.save(test);
+    //	test.setSuggest(c1);
+    	System.out.println("qqqqqqqqqqqqqqqqqqqqqqqq"+test.getName());
+    return	 testSearchRepository.save(test);
     	 
     	
     	
-    	Test test2 = new Test();
+    	/*Test test2 = new Test();
     	String[] input2= {"rafeek","karthi"};
     	Completion c2= new Completion(input2);
     	test.setName("rafeek");
     	test.setSuggest(c2);
-    	return testSearchRepository.save(test2);
+    	return testSearchRepository.save(test2);*/
     }
     
     
