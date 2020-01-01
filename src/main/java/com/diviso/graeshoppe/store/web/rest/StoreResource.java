@@ -55,10 +55,11 @@ public class StoreResource {
     @PostMapping("/test")
     public Test createTest(/*@RequestBody Test test */) {
     	Test test = new Test();
-    	/*String[] in= {"rafeek"};
-    	Completion c1= new Completion(in);*/
+    	String[] in= new String[]{"rafeek"};
+    	Completion c1= new Completion(in);
+    	test.setId(20l);
     	test.setName("rafeek");
-    //	test.setSuggest(c1);
+    	test.setSuggest(c1);
     	System.out.println("qqqqqqqqqqqqqqqqqqqqqqqq"+test.getName());
     return	 testSearchRepository.save(test);
     	 
