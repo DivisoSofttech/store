@@ -43,8 +43,10 @@ public class StoreServiceImpl implements StoreService {
 	
 	@Autowired
 	private StoreSettingsMapper storeSettingsMapper;
-	@Autowired
+
 	private final StoreSearchRepository storeSearchRepository;
+	
+	@Autowired
 	private  StoreSuggestionSearchRepository storeSuggestionSearchRepository;
 	public StoreServiceImpl(StoreRepository storeRepository, StoreMapper storeMapper,
 			StoreSearchRepository storeSearchRepository) {
@@ -72,6 +74,7 @@ public class StoreServiceImpl implements StoreService {
 		storeSuggestion.setSuggest(new Completion(new String[] {result.getRegNo()}));
 		
 		storeSearchRepository.save(store);
+		storeSuggestionSearchRepository.save(storeSuggestion);
 		return result;
 	}
 	
