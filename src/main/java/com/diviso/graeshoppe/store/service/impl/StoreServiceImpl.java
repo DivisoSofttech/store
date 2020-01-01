@@ -66,7 +66,6 @@ public class StoreServiceImpl implements StoreService {
 	public StoreDTO save(StoreDTO storeDTO) {
 		log.debug("Request to save Store : {}", storeDTO);
 		Store store = storeMapper.toEntity(storeDTO);
-		store.setId(1500l);
 		store = storeRepository.save(store);
 		StoreDTO result = storeMapper.toDto(store);
 		StoreSuggestion  storeSuggestion = new StoreSuggestion();
