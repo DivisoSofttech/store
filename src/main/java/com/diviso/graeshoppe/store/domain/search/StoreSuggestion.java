@@ -1,10 +1,12 @@
 package com.diviso.graeshoppe.store.domain.search;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.CompletionField;
+
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.core.completion.Completion;
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "storesuggestion")
 public class StoreSuggestion {
-
+@Id
 	 @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
 	    private Long id;
 	@CompletionField(maxInputLength=100)

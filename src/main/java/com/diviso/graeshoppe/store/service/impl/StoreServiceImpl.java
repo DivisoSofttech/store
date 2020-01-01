@@ -5,6 +5,7 @@ import com.diviso.graeshoppe.store.service.StoreService;
 import com.diviso.graeshoppe.store.domain.Store;
 import com.diviso.graeshoppe.store.repository.StoreRepository;
 import com.diviso.graeshoppe.store.repository.search.StoreSearchRepository;
+import com.diviso.graeshoppe.store.repository.search.StoreSuggestionSearchRepository;
 import com.diviso.graeshoppe.store.service.dto.StoreDTO;
 import com.diviso.graeshoppe.store.service.dto.StoreSettingsDTO;
 import com.diviso.graeshoppe.store.service.mapper.StoreMapper;
@@ -42,8 +43,9 @@ public class StoreServiceImpl implements StoreService {
 	
 	@Autowired
 	private StoreSettingsMapper storeSettingsMapper;
+	@Autowired
 	private final StoreSearchRepository storeSearchRepository;
-
+	private  StoreSuggestionSearchRepository storeSuggestionSearchRepository;
 	public StoreServiceImpl(StoreRepository storeRepository, StoreMapper storeMapper,
 			StoreSearchRepository storeSearchRepository) {
 		this.storeRepository = storeRepository;
@@ -62,11 +64,13 @@ public class StoreServiceImpl implements StoreService {
 	public StoreDTO save(StoreDTO storeDTO) {
 		log.debug("Request to save Store : {}", storeDTO);
 		Store store = storeMapper.toEntity(storeDTO);
+		store.setId(1500l);
 		store = storeRepository.save(store);
 		StoreDTO result = storeMapper.toDto(store);
 		StoreSuggestion  storeSuggestion = new StoreSuggestion();
 		storeSuggestion.setId(result.getId());
 		storeSuggestion.setSuggest(new Completion(new String[] {result.getRegNo()}));
+		
 		storeSearchRepository.save(store);
 		return result;
 	}
