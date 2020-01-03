@@ -5,6 +5,7 @@ import com.diviso.graeshoppe.store.service.StoreService;
 import com.diviso.graeshoppe.store.domain.Store;
 import com.diviso.graeshoppe.store.repository.StoreRepository;
 import com.diviso.graeshoppe.store.repository.search.StoreSearchRepository;
+import com.diviso.graeshoppe.store.repository.search.StoreSuggestionSearchRepository;
 import com.diviso.graeshoppe.store.service.dto.StoreDTO;
 import com.diviso.graeshoppe.store.service.dto.StoreSettingsDTO;
 import com.diviso.graeshoppe.store.service.mapper.StoreMapper;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.completion.Completion;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
-
+import com.diviso.graeshoppe.store.domain.search.StoreSuggestion;
 /**
  * Service Implementation for managing {@link Store}.
  */
@@ -41,8 +43,11 @@ public class StoreServiceImpl implements StoreService {
 	
 	@Autowired
 	private StoreSettingsMapper storeSettingsMapper;
-	private final StoreSearchRepository storeSearchRepository;
 
+	private final StoreSearchRepository storeSearchRepository;
+	
+	@Autowired
+	private  StoreSuggestionSearchRepository storeSuggestionSearchRepository;
 	public StoreServiceImpl(StoreRepository storeRepository, StoreMapper storeMapper,
 			StoreSearchRepository storeSearchRepository) {
 		this.storeRepository = storeRepository;
@@ -63,7 +68,14 @@ public class StoreServiceImpl implements StoreService {
 		Store store = storeMapper.toEntity(storeDTO);
 		store = storeRepository.save(store);
 		StoreDTO result = storeMapper.toDto(store);
+		StoreSuggestion  storeSuggestion = new StoreSuggestion();
+		storeSuggestion.setId(result.getId());
+        Completion completion=  new Completion(new String[] {result.getName()});
+      completion.setWeight(1);
+		storeSuggestion.setSuggest(completion);
+		
 		storeSearchRepository.save(store);
+		storeSuggestionSearchRepository.save(storeSuggestion);
 		return result;
 	}
 	
