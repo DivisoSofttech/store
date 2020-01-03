@@ -7,6 +7,8 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.GeoPointField;
+import org.springframework.data.elasticsearch.annotations.Mapping;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -20,6 +22,8 @@ import java.util.Set;
 @Table(name = "store")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "store")
+@Setting(settingPath = "settings/storesettings.json")
+@Mapping(mappingPath = "mappings/storemappings.json") 
 public class Store implements Serializable {
 
     private static final long serialVersionUID = 1L;

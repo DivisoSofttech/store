@@ -1,0 +1,11 @@
+{
+    "store": {
+        "properties": {
+            "name": {
+                "type": "text",
+                "analyzer": "index_analyzer",
+  				"search_analyzer": "simple"
+            }
+        }
+    }
+}
