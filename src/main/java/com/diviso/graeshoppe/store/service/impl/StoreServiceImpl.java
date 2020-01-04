@@ -68,14 +68,10 @@ public class StoreServiceImpl implements StoreService {
 		Store store = storeMapper.toEntity(storeDTO);
 		store = storeRepository.save(store);
 		StoreDTO result = storeMapper.toDto(store);
-		StoreSuggestion  storeSuggestion = new StoreSuggestion();
-		storeSuggestion.setId(result.getId());
-        Completion completion=  new Completion(new String[] {result.getName()});
-      completion.setWeight(1);
-		storeSuggestion.setSuggest(completion);
+		
 		
 		storeSearchRepository.save(store);
-		storeSuggestionSearchRepository.save(storeSuggestion);
+		
 		return result;
 	}
 	
@@ -88,8 +84,16 @@ public class StoreServiceImpl implements StoreService {
 		store.setImageLink(imageLink);
 		}
 		store = storeRepository.save(store);
+		StoreSuggestion  storeSuggestion = new StoreSuggestion();
+		storeSuggestion.setId(store.getId());
+        Completion completion=  new Completion(new String[] {store.getName()});
+        completion.setWeight(1);
+		storeSuggestion.setSuggest(completion);
+		
+		
 		StoreDTO result = storeMapper.toDto(store);
 		storeSearchRepository.save(store);
+		storeSuggestionSearchRepository.save(storeSuggestion);
 		return result;
 	}
 
