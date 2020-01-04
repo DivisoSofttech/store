@@ -90,19 +90,19 @@ public class Store implements Serializable {
     @JoinColumn(unique = true)
     private PreOrderSettings preOrderSettings;
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade=CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<StoreType> storeTypes = new HashSet<>();
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade=CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Banner> banners = new HashSet<>();
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade=CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<DeliveryInfo> deliveryInfos = new HashSet<>();
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade=CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<UserRatingReview> userRatingReviews = new HashSet<>();
 
