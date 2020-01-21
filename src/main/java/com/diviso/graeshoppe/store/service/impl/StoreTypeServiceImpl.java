@@ -2,9 +2,11 @@ package com.diviso.graeshoppe.store.service.impl;
 
 import com.diviso.graeshoppe.store.service.StoreTypeService;
 import com.diviso.graeshoppe.store.domain.StoreType;
+import com.diviso.graeshoppe.store.domain.Type;
 import com.diviso.graeshoppe.store.repository.StoreTypeRepository;
 import com.diviso.graeshoppe.store.repository.search.StoreTypeSearchRepository;
 import com.diviso.graeshoppe.store.service.dto.StoreTypeDTO;
+import com.diviso.graeshoppe.store.service.dto.TypeDTO;
 import com.diviso.graeshoppe.store.service.mapper.StoreTypeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,21 +49,24 @@ public class StoreTypeServiceImpl implements StoreTypeService {
      */
     @Override
     public StoreTypeDTO save(StoreTypeDTO storeTypeDTO) {
-        log.debug("Request to save StoreType : {}", storeTypeDTO);
+        log.debug("Request to save Type : {}", storeTypeDTO);
         StoreType storeType = storeTypeMapper.toEntity(storeTypeDTO);
         storeType = storeTypeRepository.save(storeType);
-        StoreTypeDTO result1 = storeTypeMapper.toDto(storeType);
+        StoreTypeDTO result = storeTypeMapper.toDto(storeType);
         storeTypeSearchRepository.save(storeType);
-        System.out.println("........save1........"+storeType);
+        return updateToEs(result);
+    }
 
-        storeType = storeTypeMapper.toEntity(result1);
+    private StoreTypeDTO updateToEs(StoreTypeDTO storeTypeDTO) {
+        log.debug("Request to save Type : {}", storeTypeDTO);
+        StoreType storeType = storeTypeMapper.toEntity(storeTypeDTO);
         storeType = storeTypeRepository.save(storeType);
-        System.out.println("........save2........"+storeType);
         StoreTypeDTO result = storeTypeMapper.toDto(storeType);
         storeTypeSearchRepository.save(storeType);
         return result;
     }
-
+    
+    
     /**
      * Get all the storeTypes.
      *
