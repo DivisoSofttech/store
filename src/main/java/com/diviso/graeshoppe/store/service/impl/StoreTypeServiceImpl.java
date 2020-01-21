@@ -58,7 +58,7 @@ public class StoreTypeServiceImpl implements StoreTypeService {
     }
 
     private StoreTypeDTO updateToEs(StoreTypeDTO storeTypeDTO) {
-        log.debug("Request to save in elastic _________________________________", storeTypeDTO);
+        log.debug("Request to save in elastic _________________________________"+ storeTypeDTO);
         StoreType storeType = storeTypeMapper.toEntity(storeTypeDTO);
         storeType = storeTypeRepository.save(storeType);
         StoreTypeDTO result = storeTypeMapper.toDto(storeType);
