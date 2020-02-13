@@ -1,0 +1,23 @@
+node{
+  stage('SCM Checkout'){
+  git branch: 'prod', url: 'https://github.com/DivisoSofttech/store'
+  }
+  stage('Compile-Package'){
+  sh 'mvn install -Dmaven.test.skip=true'
+  }
+   stage('Build Docker Image'){
+       sh 'sudo mvn package -Pprod verify jib:dockerBuild -Dmaven.test.skip=true'
+   }
+  stage('Push Docker Image to DockerHub'){
+      withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
+          sh "docker login -u byta3262 -p ${dockerHubPwd}"
+}
+    sh 'sudo docker tag store byta3262/store:latest'
+    sh 'sudo docker push byta3262/store'
+  }
+  
+  stage('Push Docker Image to GCR'){
+    sh 'sudo docker tag store gcr.io/production-265707/store:latest'
+    sh 'sudo docker push gcr.io/production-265707/store'
+  }
+}
