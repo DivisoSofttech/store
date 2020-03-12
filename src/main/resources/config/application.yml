@@ -150,7 +150,7 @@ spring:
       client:
         provider:
           oidc:
-            issuer-uri: https://dev.servers.divisosofttech.com/auth/realms/graeshoppe
+            issuer-uri: https://dev.servers.divisosofttech.com:8099/auth/realms/graeshoppe
         registration:
           oidc:
             client-id: account
