@@ -76,8 +76,8 @@ spring:
       hibernate.cache.hazelcast.use_lite_member: true
   data:
     elasticsearch:
-      cluster-name: f057137f46ef42e7a1e4a3b54e1a2549
-      cluster-nodes: https://f057137f46ef42e7a1e4a3b54e1a2549.us-central1.gcp.cloud.es.io:9243/
+      cluster-name: 6475edd5c7114526b4fce76eed73b839
+      cluster-nodes: https://6475edd5c7114526b4fce76eed73b839.us-central1.gcp.cloud.es.io:9243
       properties:
         path:
           logs: target/elasticsearch/log
@@ -85,10 +85,10 @@ spring:
           home: target/elasticsearch
           
     jest:
-      password: fxD0M3o0VlOpcvRqcEYmPtzP
+      password: MaPlse1j7s7w118DpHmsAAVN
       username: elastic
       readTimeout: 10000
-      uri: https://f057137f46ef42e7a1e4a3b54e1a2549.us-central1.gcp.cloud.es.io:9243/
+      uri: https://6475edd5c7114526b4fce76eed73b839.us-central1.gcp.cloud.es.io:9243
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev #, faker
